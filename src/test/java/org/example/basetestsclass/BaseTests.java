@@ -1,9 +1,6 @@
 package org.example.basetestsclass;
 
-import org.example.managers.DriverManager;
-import org.example.managers.InitManager;
-import org.example.managers.PageManager;
-import org.example.managers.TestPropManager;
+import org.example.managers.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +23,11 @@ public class BaseTests {
      */
     private static final DriverManager driverManager = DriverManager.getDriverManager();
 
+    /**
+     * Менеджер JDBCManager
+     */
+    protected static final JDBCManager jdbcManager = new JDBCManager();
+
     @BeforeAll
     public static void beforeAll() {
         InitManager.initFramework();
@@ -39,5 +41,6 @@ public class BaseTests {
     @AfterAll
     public static void afterAll() {
         InitManager.quitFramework();
+        jdbcManager.closeConnection();
     }
 }
