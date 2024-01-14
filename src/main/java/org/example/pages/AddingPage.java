@@ -33,7 +33,9 @@ public class AddingPage extends BasePage {
     @FindBy(xpath = "//button[@id='save']")
     private WebElement btnSave;
 
-    private Select selectType;
+    @FindBy(xpath = "//button[@class='close']")
+    private WebElement btnClose;
+
 
     /**
      * Проверка открытия страницы, путём проверки title страницы
@@ -71,7 +73,7 @@ public class AddingPage extends BasePage {
      * @return AddingPage - т.е. остаемся на этой странице
      */
     public AddingPage checkSelectType() {
-        selectType = new Select(waitUtilElementToBeClickable(selectTypeElement));
+        Select selectType = new Select(waitUtilElementToBeClickable(selectTypeElement));
 
         ArrayList<String> actualOptions = selectType.getOptions()
                 .stream()
@@ -93,21 +95,21 @@ public class AddingPage extends BasePage {
      * @return AddingPage - т.е. остаемся на этой странице
      */
     public AddingPage fillField(String nameField, String value) {
+        Select selectType = new Select(waitUtilElementToBeClickable(selectTypeElement));
         WebElement element = null;
         switch (nameField) {
-            case "Наименование":
+            case "Наименование" -> {
                 waitUtilElementToBeVisible(inputName).click();
                 inputName.sendKeys(value);
                 element = inputName;
-                break;
-            case "Тип":
+            }
+            case "Тип" -> {
                 waitUtilElementToBeVisible(selectTypeElement);
                 selectType.selectByValue(value);
                 element = selectTypeElement;
-                break;
-            default:
-                Assertions.fail("Поле с наименованием '" + nameField + "' отсутствует на странице " +
-                        "'Добавления товара'");
+            }
+            default -> Assertions.fail("Поле с наименованием '" + nameField + "' отсутствует на странице " +
+                    "'Добавления товара'");
         }
         Assertions.assertEquals(value, element.getAttribute("value"), "Поле '" + nameField + "' было заполнено некорректно");
         return this;
@@ -118,8 +120,9 @@ public class AddingPage extends BasePage {
      *
      * @return AddingPage - т.е. остаемся на этой странице
      */
-    public AddingPage clickCheckbox() {
-        waitUtilElementToBeClickable(checkboxExotic).click();
+    public AddingPage clickCheckbox(Boolean isExotic) {
+        if (isExotic)
+            waitUtilElementToBeClickable(checkboxExotic).click();
         return this;
     }
 
@@ -128,20 +131,15 @@ public class AddingPage extends BasePage {
      *
      * @param nameField  - имя веб элемента
      * @param errMassage - ошибка проверяемая которая отображается возле этого поля
-     * @return RegistrationFormPage - т.е. остаемся на этой странице
+     * @return AddingPage - т.е. остаемся на этой странице
      */
     public AddingPage checkErrorMessageAtField(String nameField, String errMassage) {
         WebElement element = null;
         switch (nameField) {
-            case "Наименование":
-                element = inputName;
-                break;
-            case "Тип":
-                element = selectTypeElement;
-                break;
-            default:
-                Assertions.fail("Поле с наименованием '" + nameField + "' отсутствует на странице " +
-                        "'Добавления товара'");
+            case "Наименование" -> element = inputName;
+            case "Тип" -> element = selectTypeElement;
+            default -> Assertions.fail("Поле с наименованием '" + nameField + "' отсутствует на странице " +
+                    "'Добавления товара'");
         }
         Assertions.assertEquals(errMassage, element.getText(), "Проверка ошибки у поля '" + nameField + "' была не пройдена");
         return this;
@@ -150,10 +148,21 @@ public class AddingPage extends BasePage {
     /**
      * Клик по кнопке "Сохранить"
      *
-     * @return AddingPage - т.е. остаемся на этой странице
+     * @return FoodPage - т.е. переходим на страницу {@link FoodPage}
      */
     public FoodPage clickBtnSave() {
         waitUtilElementToBeClickable(btnSave).click();
+        waitForElementToDisappear(1000, 1);
+        return pageManager.getFoodPage().checkOpenFoodPage();
+    }
+
+    /**
+     * Клик по кнопке "Закрыть"
+     *
+     * @return FoodPage - т.е. переходим на страницу {@link FoodPage}
+     */
+    public FoodPage clickBtnClose() {
+        waitUtilElementToBeClickable(btnClose).click();
         return pageManager.getFoodPage().checkOpenFoodPage();
     }
 }

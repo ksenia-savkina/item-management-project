@@ -11,7 +11,7 @@ import java.util.Properties;
 public class TestPropManager {
 
     /**
-     * Переменна для хранения данных считанных из файла properties и переданных пользователем
+     * Переменная для хранения данных считанных из файла properties и переданных пользователем
      * Т.е. переменная для хранения пользовательских properties
      *
      * @see Properties - реализован на основе {@link java.util.Hashtable}
@@ -19,7 +19,7 @@ public class TestPropManager {
     private final Properties properties = new Properties();
 
     /**
-     * Переменна для хранения объекта TestPropManager
+     * Переменная для хранения объекта TestPropManager
      */
     private static TestPropManager INSTANCE = null;
 

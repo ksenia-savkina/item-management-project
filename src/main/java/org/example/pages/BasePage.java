@@ -75,4 +75,23 @@ public class BasePage {
     protected WebElement waitUtilElementToBeVisible(WebElement element) {
         return wait.until(ExpectedConditions.visibilityOf(element));
     }
+
+    /**
+     * Ожидание того, что код страницы изменится
+     *
+     * @param maxWaitMillis - максимальное время ожидания
+     * @param pollDelimiter - временной интервал
+     */
+    public void waitForElementToDisappear(int maxWaitMillis, int pollDelimiter) {
+        double startTime = System.currentTimeMillis();
+        String prevState = driverManager.getDriver().getPageSource();
+        while (driverManager.getDriver().getPageSource() != prevState && System.currentTimeMillis() < startTime + maxWaitMillis) {
+            try {
+                Thread.sleep(pollDelimiter);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            prevState = driverManager.getDriver().getPageSource();
+        }
+    }
 }

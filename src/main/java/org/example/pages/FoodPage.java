@@ -25,6 +25,12 @@ public class FoodPage extends BasePage {
     @FindBy(xpath = "//table/tbody/tr")
     private List<WebElement> tableItems;
 
+    @FindBy(id = "navbarDropdown")
+    private WebElement btnNavbarDropdown;
+
+    @FindBy(xpath = "//a[@id='reset']")
+    private WebElement btnReset;
+
     /**
      * Проверка открытия страницы, путём проверки title страницы
      *
@@ -73,6 +79,7 @@ public class FoodPage extends BasePage {
      */
     public AddingPage clickButtonAdd() {
         waitUtilElementToBeClickable(btnAdd).click();
+        waitForElementToDisappear(1000, 1);
         return pageManager.getAddingPage().checkOpenAddingPage();
     }
 
@@ -81,7 +88,7 @@ public class FoodPage extends BasePage {
      *
      * @return FoodPage - т.е. остаемся на этой странице
      */
-    public FoodPage checkItemInTable(String name, String exotic, String type) {
+    public FoodPage checkItemInTable(String name, String type, Boolean exotic) {
         tableItems.forEach(this::waitUtilElementToBeVisible);
         ArrayList<String> lastItemValues = tableItems
                 .get(tableItems.size() - 1)
@@ -90,9 +97,20 @@ public class FoodPage extends BasePage {
                 .map(element -> waitUtilElementToBeVisible(element).getText())
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        List<String> expectedValues = Arrays.asList(name, exotic, type);
+        List<String> expectedValues = Arrays.asList(name, type, exotic.toString());
         Assertions.assertEquals(expectedValues, lastItemValues, "Товар добавлен с неверными значениями");
 
+        return this;
+    }
+
+    /**
+     * Удаление товаров из таблицы
+     *
+     * @return FoodPage - т.е. остаемся на этой странице
+     */
+    public FoodPage deleteItems() {
+        waitUtilElementToBeClickable(btnNavbarDropdown).click();
+        waitUtilElementToBeClickable(btnReset).click();
         return this;
     }
 }
