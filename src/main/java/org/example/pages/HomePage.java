@@ -1,5 +1,6 @@
 package org.example.pages;
 
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,6 +20,7 @@ public class HomePage extends BasePage {
      *
      * @return HomePage  - т.е. переходим на страницу {@link HomePage}
      */
+    @Step("Кликаем по Dropdown")
     public HomePage selectNavbarDropdown() {
         waitUtilElementToBeClickable(btnNavbarDropdown).click();
         return this;
@@ -30,6 +32,7 @@ public class HomePage extends BasePage {
      * @param nameDropdownMenu - наименование подменю
      * @return FoodPage - т.е. переходим на страницу {@link FoodPage}
      */
+    @Step("Кликаем на подменю {nameDropdownMenu}")
     public FoodPage selectSubMenu(String nameDropdownMenu) {
         for (WebElement menuItem : listDropdownMenu) {
             if (menuItem.getText().equalsIgnoreCase(nameDropdownMenu)) {

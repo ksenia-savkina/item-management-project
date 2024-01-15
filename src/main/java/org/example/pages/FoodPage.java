@@ -1,6 +1,7 @@
 package org.example.pages;
 
 
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -36,6 +37,7 @@ public class FoodPage extends BasePage {
      *
      * @return FoodPage - т.е. остаемся на этой странице
      */
+    @Step("Проверяем открытие страницы, путём проверки title страницы")
     public FoodPage checkOpenFoodPage() {
         Assertions.assertEquals("Список товаров", tableFoodTitle.getText(),
                 "Заголовок отсутствует/не соответствует требуемому");
@@ -47,6 +49,7 @@ public class FoodPage extends BasePage {
      *
      * @return FoodPage - т.е. остаемся на этой странице
      */
+    @Step("Проверяем отображение таблицы, путём проверки Header таблицы")
     public FoodPage checkFoodTableHeader() {
         List<String> expectedHeader = Arrays.asList("#", "Наименование", "Тип", "Экзотический");
 
@@ -65,6 +68,7 @@ public class FoodPage extends BasePage {
      *
      * @return FoodPage - т.е. остаемся на этой странице
      */
+    @Step("Проверяем цвет кнопки, путём проверки кода цвета кнопки")
     public FoodPage checkButtonColor() {
         Assertions.assertEquals("rgba(0, 123, 255, 1)",
                 waitUtilElementToBeClickable(btnAdd).getCssValue("background-color"),
@@ -77,9 +81,10 @@ public class FoodPage extends BasePage {
      *
      * @return AddingPage - т.е. переходим на страницу {@link AddingPage}
      */
+    @Step("Кликаем по кнопке Добавить")
     public AddingPage clickButtonAdd() {
         waitUtilElementToBeClickable(btnAdd).click();
-        waitForElementToDisappear(1000, 1);
+        waitForElementToDisappear(500, 1);
         return pageManager.getAddingPage().checkOpenAddingPage();
     }
 
@@ -88,6 +93,7 @@ public class FoodPage extends BasePage {
      *
      * @return FoodPage - т.е. остаемся на этой странице
      */
+    @Step("Проверяем отображение элемента со значениями {name}, {type}, {exotic} в таблицу, путём проверки последнего элемента таблицы")
     public FoodPage checkItemInTable(String name, String type, Boolean exotic) {
         tableItems.forEach(this::waitUtilElementToBeVisible);
         ArrayList<String> lastItemValues = tableItems
@@ -108,6 +114,7 @@ public class FoodPage extends BasePage {
      *
      * @return FoodPage - т.е. остаемся на этой странице
      */
+    @Step("Кликаем по кнопке Сброс данных")
     public FoodPage deleteItems() {
         waitUtilElementToBeClickable(btnNavbarDropdown).click();
         waitUtilElementToBeClickable(btnReset).click();
