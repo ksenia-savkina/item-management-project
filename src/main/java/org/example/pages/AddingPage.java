@@ -98,18 +98,19 @@ public class AddingPage extends BasePage {
         Select selectType = new Select(waitUtilElementToBeClickable(selectTypeElement));
         WebElement element = null;
         switch (nameField) {
-            case "Наименование" -> {
+            case "Наименование":
                 waitUtilElementToBeVisible(inputName).click();
                 inputName.sendKeys(value);
                 element = inputName;
-            }
-            case "Тип" -> {
+                break;
+            case "Тип":
                 waitUtilElementToBeVisible(selectTypeElement);
                 selectType.selectByValue(value);
                 element = selectTypeElement;
-            }
-            default -> Assertions.fail("Поле с наименованием '" + nameField + "' отсутствует на странице " +
-                    "'Добавления товара'");
+                break;
+            default:
+                Assertions.fail("Поле с наименованием '" + nameField + "' отсутствует на странице " +
+                        "'Добавления товара'");
         }
         Assertions.assertEquals(value, element.getAttribute("value"), "Поле '" + nameField + "' было заполнено некорректно");
         return this;
@@ -136,10 +137,15 @@ public class AddingPage extends BasePage {
     public AddingPage checkErrorMessageAtField(String nameField, String errMassage) {
         WebElement element = null;
         switch (nameField) {
-            case "Наименование" -> element = inputName;
-            case "Тип" -> element = selectTypeElement;
-            default -> Assertions.fail("Поле с наименованием '" + nameField + "' отсутствует на странице " +
-                    "'Добавления товара'");
+            case "Наименование":
+                element = inputName;
+                break;
+            case "Тип":
+                element = selectTypeElement;
+                break;
+            default:
+                Assertions.fail("Поле с наименованием '" + nameField + "' отсутствует на странице " +
+                        "'Добавления товара'");
         }
         Assertions.assertEquals(errMassage, element.getText(), "Проверка ошибки у поля '" + nameField + "' была не пройдена");
         return this;

@@ -1,11 +1,15 @@
 package org.example.tests;
 
 import org.example.basetestsclass.BaseTests;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+
+@DisplayName("DBWorkTest - класс, проверяющий функциональность добавления товаров в БД")
 public class DBWorkTest extends BaseTests {
 
+    @DisplayName("Тест с добавлением товара, проверкой товара в таблице, удалением товара")
     @ParameterizedTest
     @CsvSource(value = {
             "абв, VEGETABLE, 1",
@@ -13,7 +17,7 @@ public class DBWorkTest extends BaseTests {
             "*?!, VEGETABLE, 0",
             "аб*в12?!3, FRUIT, 1"
     })
-    public void Test(String name, String type, int exotic) {
+    public void addingTest(String name, String type, int exotic) {
         jdbcManager.insertItem(name, type, exotic);
         jdbcManager.readItem(name, type, exotic);
         jdbcManager.deleteItem(name, type, exotic);

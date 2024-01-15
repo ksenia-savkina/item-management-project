@@ -5,13 +5,19 @@ import org.junit.jupiter.api.Assertions;
 import java.sql.DriverManager;
 import java.sql.*;
 
+import static org.example.utils.PropConst.*;
+
 public class JDBCManager {
 
     private static final Connection connection;
 
     static {
         try {
-            connection = DriverManager.getConnection("jdbc:h2:tcp://localhost:9092/mem:testdb", "user", "pass");
+            TestPropManager testPropManager = TestPropManager.getTestPropManager();
+            String url = testPropManager.getProperty(JDBC_URL);
+            String user = testPropManager.getProperty(JDBC_USER);
+            String password = testPropManager.getProperty(JDBC_PASSWORD);
+            connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
