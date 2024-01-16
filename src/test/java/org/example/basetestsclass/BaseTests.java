@@ -30,6 +30,7 @@ public class BaseTests {
 
     @BeforeAll
     public static void beforeAll() {
+        jdbcManager.getConnection();
         InitManager.initFramework();
     }
 
