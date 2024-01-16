@@ -1,6 +1,5 @@
 package org.example.pages;
 
-import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -43,7 +42,6 @@ public class AddingPage extends BasePage {
      *
      * @return AddingPage - т.е. остаемся на этой странице
      */
-    @Step("Проверяем открытие страницы, путём проверки title страницы")
     public AddingPage checkOpenAddingPage() {
         waitUtilElementToBeVisible(editModal);
         Assertions.assertEquals("Добавление товара", addingPageTitle.getText(),
@@ -56,7 +54,6 @@ public class AddingPage extends BasePage {
      *
      * @return AddingPage - т.е. остаемся на этой странице
      */
-    @Step("Проверяем отображение полей формы, путём проверки labels на форме")
     public AddingPage checkLabels() {
         List<String> expectedLabels = Arrays.asList("Наименование", "Тип", "Экзотический");
 
@@ -71,11 +68,10 @@ public class AddingPage extends BasePage {
     }
 
     /**
-     * Проверка значений выпадающего списка
+     * Проверка значений выпадающего списка, путём проверки его значений
      *
      * @return AddingPage - т.е. остаемся на этой странице
      */
-    @Step("Проверяем значения выпадающего списка")
     public AddingPage checkSelectType() {
         Select selectType = new Select(waitUtilElementToBeClickable(selectTypeElement));
 
@@ -98,7 +94,6 @@ public class AddingPage extends BasePage {
      * @param value     - значение вводимое в поле
      * @return AddingPage - т.е. остаемся на этой странице
      */
-    @Step("Заполняем поле {nameField} значением {value}")
     public AddingPage fillField(String nameField, String value) {
         Select selectType = new Select(waitUtilElementToBeClickable(selectTypeElement));
         WebElement element = null;
@@ -126,7 +121,6 @@ public class AddingPage extends BasePage {
      *
      * @return AddingPage - т.е. остаемся на этой странице
      */
-    @Step("Кликаем/Не кликаем по чекбоксу Экзотический - {isExotic} (определяем по значению isExotic)")
     public AddingPage clickCheckbox(Boolean isExotic) {
         if (isExotic)
             waitUtilElementToBeClickable(checkboxExotic).click();
@@ -134,13 +128,12 @@ public class AddingPage extends BasePage {
     }
 
     /**
-     * Проверка ошибки относящейся к конкретному полю на форме
+     * Проверка ошибки относящаяся к конкретному полю на форме
      *
      * @param nameField  - имя веб элемента
      * @param errMassage - ошибка проверяемая которая отображается возле этого поля
      * @return AddingPage - т.е. остаемся на этой странице
      */
-    @Step("Проверяем ошибку относящуюся к полю {nameField}")
     public AddingPage checkErrorMessageAtField(String nameField, String errMassage) {
         WebElement element = null;
         switch (nameField) {
@@ -163,10 +156,9 @@ public class AddingPage extends BasePage {
      *
      * @return FoodPage - т.е. переходим на страницу {@link FoodPage}
      */
-    @Step("Кликаем по кнопке Сохранить")
     public FoodPage clickBtnSave() {
         waitUtilElementToBeClickable(btnSave).click();
-        waitForElementToDisappear(500, 1);
+        waitForElementToDisappear(1000, 1);
         return pageManager.getFoodPage().checkOpenFoodPage();
     }
 
@@ -175,7 +167,6 @@ public class AddingPage extends BasePage {
      *
      * @return FoodPage - т.е. переходим на страницу {@link FoodPage}
      */
-    @Step("Кликаем по кнопке Закрыть")
     public FoodPage clickBtnClose() {
         waitUtilElementToBeClickable(btnClose).click();
         return pageManager.getFoodPage().checkOpenFoodPage();
