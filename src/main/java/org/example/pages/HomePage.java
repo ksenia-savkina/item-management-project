@@ -20,7 +20,7 @@ public class HomePage extends BasePage {
      *
      * @return HomePage  - т.е. переходим на страницу {@link HomePage}
      */
-    @Step("Кликаем по Dropdown")
+    @Step("Кликаем по NavbarDropdown")
     public HomePage selectNavbarDropdown() {
         waitUtilElementToBeClickable(btnNavbarDropdown).click();
         return this;

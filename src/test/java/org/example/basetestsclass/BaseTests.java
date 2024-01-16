@@ -26,7 +26,7 @@ public class BaseTests {
     /**
      * Менеджер JDBCManager
      */
-    protected static final JDBCManager jdbcManager = new JDBCManager();
+    protected static final JDBCManager jdbcManager = JDBCManager.getJDBCManager();
 
     @BeforeAll
     public static void beforeAll() {

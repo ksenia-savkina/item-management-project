@@ -1,5 +1,7 @@
 package org.example.managers;
 
+import org.example.database.ItemTable;
+import org.example.pages.FoodPage;
 import org.junit.jupiter.api.Assertions;
 
 import java.sql.DriverManager;
@@ -9,89 +11,42 @@ import static org.example.utils.PropConst.*;
 
 public class JDBCManager {
 
-    private static final Connection connection;
+    private static JDBCManager jdbcManager;
 
-    static {
-        try {
-            TestPropManager testPropManager = TestPropManager.getTestPropManager();
-            String url = testPropManager.getProperty(JDBC_URL);
-            String user = testPropManager.getProperty(JDBC_USER);
-            String password = testPropManager.getProperty(JDBC_PASSWORD);
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    private static Connection connection;
+
+    private ItemTable itemTable;
+
+    /**
+     * Ленивая инициализация JDBCManager
+     *
+     * @return JDBCManager
+     */
+    public static JDBCManager getJDBCManager() {
+        if (jdbcManager == null) {
+            jdbcManager = new JDBCManager();
         }
+        return jdbcManager;
     }
 
     /**
-     * Метод добавления товара
+     * Метод ленивой инициализации Connection
      *
-     * @param name   - название товара
-     * @param type   - тип товара
-     * @param exotic - экзотический товар (1 - true, 0 - false)
+     * @return Connection - возвращает Connection
      */
-    public void insertItem(String name, String type, int exotic) {
-        String queryInsert =
-                "INSERT INTO food (food_name, food_type, food_exotic) VALUES (?, ?, ?)";
-        try {
-            PreparedStatement pstmtInsert = connection.prepareStatement(queryInsert);
-            pstmtInsert.setString(1, name);
-            pstmtInsert.setString(2, type);
-            pstmtInsert.setInt(3, exotic);
-            pstmtInsert.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public static Connection getConnection() {
+        if (connection == null) {
+            try {
+                TestPropManager testPropManager = TestPropManager.getTestPropManager();
+                String url = testPropManager.getProperty(JDBC_URL);
+                String user = testPropManager.getProperty(JDBC_USER);
+                String password = testPropManager.getProperty(JDBC_PASSWORD);
+                connection = DriverManager.getConnection(url, user, password);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-    }
-
-    /**
-     * Метод получения товара
-     *
-     * @param name   - название товара
-     * @param type   - тип товара
-     * @param exotic - экзотический товар (1 - true, 0 - false)
-     */
-    public void readItem(String name, String type, int exotic) {
-        String querySelect = "SELECT * FROM food WHERE food_name = ? AND food_type = ? AND food_exotic = ?";
-        try {
-            PreparedStatement pstmtSelect = connection.prepareStatement(querySelect);
-            pstmtSelect.setString(1, name);
-            pstmtSelect.setString(2, type);
-            pstmtSelect.setInt(3, exotic);
-
-            ResultSet resultSet = pstmtSelect.executeQuery();
-            resultSet.last();
-
-            String resultName = resultSet.getString("food_name");
-            String resultType = resultSet.getString("food_type");
-            int resultExotic = resultSet.getInt("food_exotic");
-
-            Assertions.assertEquals(name, resultName, "Названия добавляемого и добавленного товаров не совпадают");
-            Assertions.assertEquals(type, resultType, "Типы добавляемого и добавленного товаров не совпадают");
-            Assertions.assertEquals(exotic, resultExotic, "Экзотичность добавляемого и добавленного товаров не совпадают");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Метод удаления товара
-     *
-     * @param name   - название товара
-     * @param type   - тип товара
-     * @param exotic - экзотический товар (1 - true, 0 - false)
-     */
-    public void deleteItem(String name, String type, int exotic) {
-        String queryDelete = "DELETE FROM food WHERE food_name = ? AND food_type = ? AND food_exotic = ?";
-        try {
-            PreparedStatement pstmtDelete = connection.prepareStatement(queryDelete);
-            pstmtDelete.setString(1, name);
-            pstmtDelete.setString(2, type);
-            pstmtDelete.setInt(3, exotic);
-            pstmtDelete.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return connection;
     }
 
     /**
@@ -103,5 +58,17 @@ public class JDBCManager {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Ленивая инициализация {@link ItemTable}
+     *
+     * @return ItemTable
+     */
+    public ItemTable getItemTable() {
+        if (itemTable == null) {
+            itemTable = new ItemTable();
+        }
+        return itemTable;
     }
 }
