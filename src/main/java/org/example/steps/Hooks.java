@@ -17,6 +17,7 @@ public class Hooks {
      * @see DriverManager#getDriverManager()
      */
     private static final DriverManager driverManager = DriverManager.getDriverManager();
+
     @Before
     public void init() {
         InitManager.initFramework();

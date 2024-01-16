@@ -1,11 +1,10 @@
 package org.example.managers;
 
 import org.example.database.ItemTable;
-import org.example.pages.FoodPage;
-import org.junit.jupiter.api.Assertions;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.*;
+import java.sql.SQLException;
 
 import static org.example.utils.PropConst.*;
 

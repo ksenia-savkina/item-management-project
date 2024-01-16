@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 @DisplayName("DBWorkTest - класс, проверяющий функциональность добавления товаров в БД")
 public class DBWorkTest extends BaseTests {
 
-    private final ItemTable itemTable =  jdbcManager.getItemTable();
+    private final ItemTable itemTable = jdbcManager.getItemTable();
 
     @DisplayName("Тест с добавлением товара, проверкой товара в таблице, удалением товара")
     @ParameterizedTest
