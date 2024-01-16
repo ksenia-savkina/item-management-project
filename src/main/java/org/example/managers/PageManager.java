@@ -50,13 +50,6 @@ public class PageManager {
     }
 
     /**
-     * Установка null для PageManager
-     */
-    public static void setPageManagerNull() {
-        pageManager = null;
-    }
-
-    /**
      * Ленивая инициализация {@link HomePage}
      *
      * @return HomePage
